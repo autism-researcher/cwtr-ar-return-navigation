@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use this code or data, please cite the paper and this archive."
+title: "CWTR: Self-Trained, Map-Free AR Return Navigation — Code & Field Data"
+type: software
+authors:
+  - family-names: Hossain
+    given-names: Mohammad Belayet
+    email: hossainmohammadbelayet@gmail.com
+    affiliation: "University of Prince Mugrin"
+  - family-names: Tayan
+    given-names: Omar
+    affiliation: "University of Prince Mugrin"
+version: "1.0.0"
+date-released: "2026-06-12"
+license: MIT
+preferred-citation:
+  type: article
+  title: "Self-Trained, Map-Free AR Return Navigation with Confidence-Weighted Trajectory Reconstruction"
+  authors:
+    - family-names: Hossain
+      given-names: Mohammad Belayet
+    - family-names: Tayan
+      given-names: Omar
+  journal: "IEEE Access"
+  year: 2026

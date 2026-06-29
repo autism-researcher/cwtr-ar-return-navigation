@@ -1,0 +1,27 @@
+{
+  "title": "CWTR: Self-Trained, Map-Free AR Return Navigation — Code & Field Data",
+  "upload_type": "software",
+  "description": "Reproducibility package for the IEEE Access manuscript 'Self-Trained, Map-Free AR Return Navigation with Confidence-Weighted Trajectory Reconstruction'. Contains the seeded simulation harness, component-evaluation and figure-generation scripts, ground-truthed real-trace analysis (Campaign A, N=8), the June 2026 high-multipath field campaign GPS recordings (Haram district, Madinah, and UPM campus; N=55 analysed), and Campaign B on-device end-point accuracy measurements. Every numerical value, table, and data-driven figure in the paper is reproduced by these scripts from a single fixed seed.",
+  "creators": [
+    {
+      "name": "Hossain, Mohammad Belayet",
+      "affiliation": "University of Prince Mugrin"
+    },
+    {
+      "name": "Tayan, Omar",
+      "affiliation": "University of Prince Mugrin"
+    }
+  ],
+  "license": "MIT",
+  "keywords": [
+    "augmented reality",
+    "pedestrian navigation",
+    "GNSS multipath",
+    "trajectory reconstruction",
+    "Kalman filter",
+    "Hajj",
+    "assistive navigation",
+    "field dataset"
+  ],
+  "access_right": "open"
+}

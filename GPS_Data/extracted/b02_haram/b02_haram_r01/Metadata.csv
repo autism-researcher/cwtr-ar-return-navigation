@@ -1,0 +1,2 @@
+version,device name,recording epoch time,recording time,recording timezone,platform,appVersion,device id,sensors,sampleRateMs,standardisation,platform version
+3,iPhone 12 Pro,1781104102310,2026-06-10_15-08-22,Asia/Riyadh,ios,1.59,2fdfce6e-f8fb-430c-8278-6d31d107269c,Location|Annotation,0|,false,18.5
