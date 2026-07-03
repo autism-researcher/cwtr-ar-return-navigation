@@ -38,7 +38,7 @@ Put recorded GPS traces in ./real_traces/ :
     <name>.markers.csv  (optional) rows: start,lat,lon  and  dest,lat,lon
 Run:  python3 analyze_real_traces.py
   -> prints per-trace + aggregate table, writes real_trace_results.csv
-     and real_trace_rmse.png. Same CWTR + baselines as the simulation.
+     and realtrace_rmse.png. Same CWTR + baselines as the simulation.
 Test first:  python3 analyze_real_traces.py --make-demo   (SYNTHETIC; not for paper)
 Sample format files (demo_SYNTHETIC.*) are in ./real_traces/ as templates.
 Campaign B data-entry workbook: ../real_data/CampaignB_route_measurements.xlsx

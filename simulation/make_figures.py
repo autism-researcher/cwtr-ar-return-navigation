@@ -3,7 +3,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import cwtr_simulation as S
 
-OUT="figures"; import os; os.makedirs(OUT,exist_ok=True)
+OUT="../figures"; import os; os.makedirs(OUT,exist_ok=True)
 RATE=S.PRIMARY_RATE
 # High-quality output: vector PDF (used by LaTeX) + 300-dpi PNG fallback.
 # pdf.fonttype=42 embeds TrueType fonts so text stays selectable/sharp.

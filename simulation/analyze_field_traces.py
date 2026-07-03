@@ -1,7 +1,7 @@
 """
 Truth-free field-trace evaluation for CWTR  (Campaign A, high-multipath extension)
 ==================================================================================
-Processes the Sensor Logger recordings in  ../GPS_Data/extracted/<batch>/<rec>/Location.csv
+Processes the Sensor Logger recordings in  ../data/GPS_Data/extracted/<batch>/<rec>/Location.csv
 through the IDENTICAL CWTR pipeline and baselines used in analyze_real_traces.py.
 
 These field traces have no surveyed ground-truth polyline, so only
@@ -33,7 +33,7 @@ from analyze_real_traces import (A0, VMAX, SIGMA0, TAU, GATE, Q_ACC,
                                  confidence, decim, jitter,
                                  to_xy, wilcoxon_signedrank)
 
-ROOT = os.path.join('..', 'GPS_Data', 'extracted')
+ROOT = os.path.join('..', 'data', 'GPS_Data', 'extracted')
 EXCLUDE = (
     'b01_haram_r01',   # 25-min pause-dominated, not a single walked block
     'b02_haram_r08', # 1.9-km mixed-mode segment

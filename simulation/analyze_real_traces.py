@@ -362,9 +362,9 @@ def main():
                    rotation=20, ha='right', fontsize=8)
         plt.ylabel('RMSE to ground-truth path (m)'); plt.title(f'Real GPS traces (N={N})')
         plt.tight_layout()
-        plt.savefig('real_trace_rmse.pdf')           # vector, primary
-        plt.savefig('real_trace_rmse.png', dpi=300)   # high-res raster fallback
-        print("wrote real_trace_rmse.pdf + .png")
+        plt.savefig('../figures/realtrace_rmse.pdf')           # vector, primary
+        plt.savefig('../figures/realtrace_rmse.png', dpi=300)   # high-res raster fallback
+        print("wrote ../figures/realtrace_rmse.pdf + .png")
     except Exception as e:
         print("(figure skipped:", e, ")")
 
