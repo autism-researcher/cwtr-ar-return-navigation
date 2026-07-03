@@ -1,8 +1,8 @@
 # CWTR: Self-Trained, Map-Free AR Return Navigation — Code & Field Data
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21029167.svg)](https://doi.org/10.5281/zenodo.21029167)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21029166.svg)](https://doi.org/10.5281/zenodo.21029166)
 
-Archived at Zenodo: DOI [10.5281/zenodo.21029167](https://doi.org/10.5281/zenodo.21029167).
+Archived at Zenodo: DOI [10.5281/zenodo.21029166](https://doi.org/10.5281/zenodo.21029166).
 
 Reproducibility package for the IEEE Access manuscript:
 

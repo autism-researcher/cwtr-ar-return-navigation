@@ -13,7 +13,7 @@ authors:
 version: "1.0.0"
 date-released: "2026-06-12"
 license: MIT
-doi: 10.5281/zenodo.21029167
+doi: 10.5281/zenodo.21029166
 repository-code: "https://github.com/autism-researcher/cwtr-ar-return-navigation"
 preferred-citation:
   type: article
