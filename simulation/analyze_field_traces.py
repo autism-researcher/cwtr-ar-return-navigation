@@ -188,11 +188,9 @@ def main():
     plt.figure(figsize=(5, 3.4))
     sc = {'benign': '#4C7DB2', 'moderate': '#C99A3C', 'severe': '#B5524C'}
     for s in strata:
-        accs = np.concatenate([load_location_csv(os.path.join(ROOT, '*'))[3]
-                               if False else r_acc for r_acc in
-                               [r['raw'][3] for r in recs if r['stratum'] == s]]) \
-               if any(r['stratum'] == s for r in recs) else None
-        if accs is None: continue
+        acc_arrays = [r['raw'][3] for r in recs if r['stratum'] == s]
+        if not acc_arrays: continue
+        accs = np.concatenate(acc_arrays)
         xs = np.sort(accs); ys = np.arange(1, len(xs) + 1) / len(xs)
         n = sum(r['stratum'] == s for r in recs)
         plt.semilogx(xs, ys, color=sc[s], lw=1.8, label=f"{s} (N={n})")
