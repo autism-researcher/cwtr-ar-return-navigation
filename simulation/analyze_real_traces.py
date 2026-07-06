@@ -170,19 +170,14 @@ def kalman_rts_chi2_vardt(z, acc, dts, chi2=CHI2_99, inflate=GATE):
         xsm[t] = xs[t] + C @ (xsm[t + 1] - xp[t + 1])
     return xsm[:, [0, 2]]
 
+from cwtr_simulation import conf as _canonical_conf
+
 def confidence(z, acc, dts):
-    n = len(z); c = np.ones(n)
-    nominal = np.median(dts[1:]) if n > 1 else 1.0
-    for t in range(n):
-        cacc = 1 / (1 + (acc[t] / A0) ** 2)
-        if t > 0:
-            dt = max(dts[t], 1e-3); s = np.linalg.norm(z[t] - z[t - 1]) / dt
-            ckin = 1 / (1 + (max(0, s - VMAX)) ** 2)
-            ctmp = 1 / (1 + (max(0, dt / nominal - 1.5)) ** 2)   # penalise long gaps
-        else:
-            ckin = ctmp = 1.0
-        c[t] = np.clip(cacc * ckin * ctmp, 1e-3, 1)
-    return c
+    """Multi-factor confidence on variable-rate recorded data.
+    Delegates to the canonical implementation in cwtr_simulation.conf
+    (single source of truth); passing dts activates the temporal factor
+    c_tmp of Eq. (1), which is dormant on the uniform-rate simulation."""
+    return _canonical_conf(z, acc, dts=dts)
 
 def decim(z, mind):
     keep = [0]; last = z[0]

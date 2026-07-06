@@ -60,12 +60,8 @@ save("fig3_rmse")
 def cwtr_rmse(rate,use_acc,use_kin,seed=S.SEED):
     rr=np.random.default_rng(seed); o=[]
     for _ in range(S.M):
-        tr=S.gen_truth(rr); zz,aa,ss=S.gen_obs(tr,rate,rr); n=len(zz); cc=np.ones(n)
-        for t in range(n):
-            ca=1/(1+(aa[t]/S.A0)**2) if use_acc else 1.0
-            sp=np.linalg.norm(zz[t]-zz[t-1])/S.DT if t>0 else 0.0
-            ck=1/(1+(max(0,sp-S.VMAX))**2) if use_kin else 1.0
-            cc[t]=np.clip(ca*ck,1e-3,1)
+        tr=S.gen_truth(rr); zz,aa,ss=S.gen_obs(tr,rate,rr); n=len(zz)
+        cc=S.conf(zz,aa,use_acc=use_acc,use_kin=use_kin)   # canonical confidence
         R=[np.eye(2)*((S.SIGMA0**2/cc[t])*(S.GATE if cc[t]<S.TAU else 1.0)) for t in range(n)]
         o.append(S.metrics(S.kalman_rts(zz,R),tr)[0])
     return np.mean(o)
@@ -93,27 +89,14 @@ plt.xlabel('Multipath outlier rate'); plt.ylabel('RMSE (m)'); plt.legend(fontsiz
 plt.title('Sensitivity to multipath severity')
 save("fig5_noise")
 
-# ---- wandering score distributions ----
-def gen_pur(r):
-    h=r.uniform(0,2*np.pi);p=np.zeros(2);P=[p.copy()]
-    for _ in range(120):h+=r.normal(0,0.18);p=p+1.3*np.array([np.cos(h),np.sin(h)]);P.append(p.copy())
-    return np.array(P)
-def gen_wan(r):
-    h=r.uniform(0,2*np.pi);p=np.zeros(2);P=[p.copy()]
-    for _ in range(120):h+=r.normal(0,0.55);p=p+r.uniform(0.4,1.3)*np.array([np.cos(h),np.sin(h)]);P.append(p.copy())
-    return np.array(P)
-def wsc(pos):
-    d=np.diff(pos,axis=0);L=np.linalg.norm(d,axis=1).sum();net=np.linalg.norm(pos[-1]-pos[0]);st=net/(L+1e-9)
-    ang=np.arctan2(d[:,1],d[:,0]);dh=np.abs(np.diff(ang));dh=np.minimum(dh,2*np.pi-dh)
-    cells={tuple(x) for x in np.round(pos/3.0).astype(int)};rev=len(pos)-len(cells)
-    return (1-st)+np.var(dh)*0.5+rev*0.02
-r=np.random.default_rng(11)
-sp=[wsc(gen_pur(r)) for _ in range(250)]; sw=[wsc(gen_wan(r)) for _ in range(250)]
+# ---- wandering score distributions (Eq. (6) score; AUC computed live) ----
+from extra_modules import wandering_experiment, confgated_experiment
+_auc,_f1,_prec,_rec,_acc,sp,sw = wandering_experiment()
 plt.figure(figsize=(5,3.4))
 plt.hist(sp,bins=30,alpha=0.75,color=GREEN,edgecolor=EDGE,linewidth=0.5,label='Purposeful')
 plt.hist(sw,bins=30,alpha=0.75,color=RED,edgecolor=EDGE,linewidth=0.5,hatch='//',label='Wandering')
-plt.xlabel('Wandering irregularity score'); plt.ylabel('Count'); plt.legend(fontsize=8)
-plt.title('Wandering detection (AUC = 0.99)')
+plt.xlabel('Wandering irregularity score $S_W$'); plt.ylabel('Count'); plt.legend(fontsize=8)
+plt.title(f'Wandering detection (AUC = {_auc:.2f}, computed)')
 save("fig7_wandering")
 
 # ---- bandit learning curve (illustrative model) ----
@@ -150,11 +133,12 @@ for i in range(3):
 plt.title('Modeled profile cost matrix (adaptive -66%)')
 save("fig9_costmatrix")
 
-# ---- confidence-gated false trigger ----
+# ---- confidence-gated false trigger (rates computed live) ----
+_raw_pct,_cwtr_pct = confgated_experiment()
 plt.figure(figsize=(4.2,3.4))
-gbar=plt.bar(['Raw-fix\ndetector','CWTR-gated\ndetector'],[100,8],color=[RED,GREEN],edgecolor=EDGE,linewidth=0.8)
+gbar=plt.bar(['Raw-fix\ndetector','CWTR-gated\ndetector'],[_raw_pct,_cwtr_pct],color=[RED,GREEN],edgecolor=EDGE,linewidth=0.8)
 gbar[0].set_hatch('//')
-plt.text(0,101,'100%',ha='center'); plt.text(1,9,'8%',ha='center')
+plt.text(0,_raw_pct+1,f'{_raw_pct:.0f}%',ha='center'); plt.text(1,_cwtr_pct+1,f'{_cwtr_pct:.0f}%',ha='center')
 plt.ylabel('False-trigger rate on purposeful motion (%)'); plt.ylim(0,110)
 plt.title('Confidence-gated disorientation detection')
 save("fig10_confgated")

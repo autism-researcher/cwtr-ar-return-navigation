@@ -140,13 +140,26 @@ def kalman_rts_chi2(z, a, chi2=CHI2_99, inflate=GATE):
     return xsm[:, [0, 2]]
 
 
-def conf(z, a):
+def conf(z, a, dts=None, use_acc=True, use_kin=True, use_tmp=True):
+    """Canonical multi-factor confidence, Eqs. (1)-(3) of the paper.
+    Single source of truth for ALL scripts (simulation, real traces, field
+    campaign, figures, component evaluations).
+    dts=None  -> uniform 1 Hz sampling: c_tmp is inactive (equals 1), exactly
+                 the simulation setting described in Sec. IV-A.
+    dts given -> variable-rate recorded data: c_tmp activates as in Eq. (1).
+    use_*     -> ablation toggles (Sec. V-C) without re-implementing the score."""
     n = len(z); c = np.ones(n)
+    nominal = np.median(dts[1:]) if (dts is not None and n > 1) else DT
     for t in range(n):
-        cacc = 1 / (1 + (a[t] / A0) ** 2)
-        s = np.linalg.norm(z[t] - z[t - 1]) / DT if t > 0 else 0.0
-        ckin = 1 / (1 + (max(0, s - VMAX)) ** 2)
-        c[t] = np.clip(cacc * ckin, 1e-3, 1)
+        cacc = 1 / (1 + (a[t] / A0) ** 2) if use_acc else 1.0
+        if t > 0:
+            dt = max(dts[t], 1e-3) if dts is not None else DT
+            s = np.linalg.norm(z[t] - z[t - 1]) / dt
+            ckin = 1 / (1 + (max(0, s - VMAX)) ** 2) if use_kin else 1.0
+            ctmp = 1 / (1 + (max(0, dt / nominal - 1.5)) ** 2) if (use_tmp and dts is not None) else 1.0
+        else:
+            ckin = ctmp = 1.0
+        c[t] = np.clip(cacc * ckin * ctmp, 1e-3, 1)
     return c
 
 
